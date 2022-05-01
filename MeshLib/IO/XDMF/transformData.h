@@ -31,7 +31,8 @@ namespace MeshLib::IO
  * @return vector of meta data
  */
 std::vector<XdmfHdfData> transformAttributes(MeshLib::Mesh const& mesh,
-                                             unsigned int n_files);
+                                             unsigned int n_files,
+                                             unsigned int chunk_size_bytes);
 /**
  * \brief Create meta data for geometry used for hdf5 and xdmf
  * @param mesh OGS mesh can be mesh or partitionedMesh
@@ -41,7 +42,8 @@ std::vector<XdmfHdfData> transformAttributes(MeshLib::Mesh const& mesh,
  * @return Geometry meta data
  */
 XdmfHdfData transformGeometry(MeshLib::Mesh const& mesh, double const* data_ptr,
-                              unsigned int n_files);
+                              unsigned int n_files,
+                              unsigned int chunk_size_bytes);
 /**
  * \brief  Create meta data for topology used for HDF5 and XDMF
  * @param values actual topology values to get size and memory location
@@ -50,7 +52,8 @@ XdmfHdfData transformGeometry(MeshLib::Mesh const& mesh, double const* data_ptr,
  * @return Topology meta data
  */
 XdmfHdfData transformTopology(std::vector<int> const& values,
-                              unsigned int n_files);
+                              unsigned int n_files,
+                              unsigned int chunk_size_bytes);
 /**
  * \brief Copies all node points into a new vector. Contiguous data used for
  * writing. Conform with XDMF standard in

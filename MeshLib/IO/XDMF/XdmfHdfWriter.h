@@ -40,7 +40,7 @@ public:
         std::vector<std::reference_wrapper<const MeshLib::Mesh>> meshes,
         std::filesystem::path const& filepath, unsigned long long time_step,
         double initial_time, std::set<std::string> const& variable_output_names,
-        bool use_compression, unsigned int n_files);
+        bool use_compression, unsigned int n_files,  unsigned int const n_chunks);
 
     /**
      * \brief Adds data for either lazy (xdmf) or eager (hdf) writing algorithm

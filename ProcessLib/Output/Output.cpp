@@ -73,8 +73,7 @@ struct OutputFile
                int const iteration, int const data_mode_,
                bool const compression_,
                std::set<std::string> const& outputnames,
-               unsigned int const n_files,
-               unsigned int const n_chunks_per_file)
+               unsigned int const n_files, unsigned int const chunk_size_bytes)
         : name(constructFilename(type, prefix, suffix, mesh_name, timestep, t,
                                  iteration)),
           path(BaseLib::joinPaths(directory, name)),
@@ -83,7 +82,7 @@ struct OutputFile
           compression(compression_),
           outputnames(outputnames),
           n_files(n_files),
-          n_chunks_per_file(n_chunks_per_file)
+          chunk_size_bytes(chunk_size_bytes)
     {
     }
 
@@ -101,7 +100,7 @@ struct OutputFile
     bool const compression;
     std::set<std::string> outputnames;
     unsigned int n_files;
-    unsigned int n_chunks_per_file;
+    unsigned int chunk_size_bytes;
 
     static std::string constructFilename(OutputType const type,
                                          std::string prefix, std::string suffix,
@@ -263,7 +262,7 @@ bool Output::isOutputProcess(const int process_id, const Process& process) const
 Output::Output(std::string directory, OutputType file_type,
                std::string file_prefix, std::string file_suffix,
                bool const compress_output, unsigned int const n_files,
-               unsigned int const n_chunks_per_file,
+               unsigned int const chunk_size_bytes,
                std::string const& data_mode,
                bool const output_nonlinear_iteration_results,
                std::vector<PairRepeatEachSteps> repeats_each_steps,
@@ -277,7 +276,7 @@ Output::Output(std::string directory, OutputType file_type,
       _output_file_suffix(std::move(file_suffix)),
       _output_file_compression(compress_output),
       _n_files(n_files),
-      _n_chunks_per_file(n_chunks_per_file),
+      _chunk_size_bytes(chunk_size_bytes),
       _output_file_data_mode(convertVtkDataMode(data_mode)),
       _output_nonlinear_iteration_results(output_nonlinear_iteration_results),
       _repeats_each_steps(std::move(repeats_each_steps)),
@@ -358,7 +357,8 @@ void Output::outputMeshXdmf(
         _mesh_xdmf_hdf_writer = std::make_unique<MeshLib::IO::XdmfHdfWriter>(
             std::move(meshes), path, timestep, t,
             _output_data_specification.output_variables,
-            output_file.compression, output_file.n_files, output_file.n_chunks_per_file);
+            output_file.compression, output_file.n_files,
+            output_file.chunk_size_bytes);
     }
     else
     {
@@ -389,11 +389,12 @@ void Output::outputMeshes(
     else if (_output_file_type == ProcessLib::OutputType::xdmf)
     {
         std::string name = meshes[0].get().getName();
-        OutputFile const file(
-            _output_directory, _output_file_type, _output_file_prefix, "", name,
-            timestep, t, iteration, _output_file_data_mode,
-            _output_file_compression,
-            _output_data_specification.output_variables, _n_files, _n_chunks_per_file);
+        OutputFile const file(_output_directory, _output_file_type,
+                              _output_file_prefix, "", name, timestep, t,
+                              iteration, _output_file_data_mode,
+                              _output_file_compression,
+                              _output_data_specification.output_variables,
+                              _n_files, _chunk_size_bytes);
 
         outputMeshXdmf(std::move(file), std::move(meshes), timestep, t);
     }

@@ -78,7 +78,7 @@ std::unique_ptr<Output> createOutput(
         }
     }();
 
-    auto n_chunks_per_file = [&hdf]() -> unsigned int
+    auto chunk_size_bytes = [&hdf]() -> unsigned int
     {
         if (hdf)
         {
@@ -188,7 +188,7 @@ std::unique_ptr<Output> createOutput(
 
     return std::make_unique<Output>(
         output_directory, output_type, prefix, suffix, compress_output,
-        number_of_files, n_chunks_per_file, data_mode, output_iteration_results,
+        number_of_files, chunk_size_bytes, data_mode, output_iteration_results,
         std::move(repeats_each_steps), std::move(fixed_output_times),
         std::move(output_data_specification), std::move(mesh_names_for_output),
         meshes);

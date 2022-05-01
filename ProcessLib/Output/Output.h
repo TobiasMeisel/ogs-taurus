@@ -58,6 +58,7 @@ public:
     Output(std::string directory, OutputType const file_type,
            std::string file_prefix, std::string file_suffix,
            bool const compress_output, unsigned int n_files,
+           unsigned int n_chunks_per_file,
            std::string const& data_mode,
            bool const output_nonlinear_iteration_results,
            std::vector<PairRepeatEachSteps> repeats_each_steps,
@@ -149,6 +150,8 @@ private:
     bool const _output_file_compression;
     //! Specifies the number of hdf5 output files.
     unsigned int const _n_files;
+    //! Specifies the chunks_size in bytes per hdf5 output file.
+    unsigned int const _n_chunks_per_file;
 
     //! Chooses vtk's data mode for output following the enumeration given in
     /// the vtkXMLWriter: {Ascii, Binary, Appended}.  See vtkXMLWriter

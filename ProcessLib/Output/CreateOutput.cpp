@@ -78,6 +78,19 @@ std::unique_ptr<Output> createOutput(
         }
     }();
 
+    auto n_chunks_per_file = [&hdf]() -> unsigned int
+    {
+        if (hdf)
+        {
+            //! \ogs_file_param{prj__time_loop__output__hdf__chunk_size_bytes}
+            return hdf->getConfigParameter<unsigned int>("chunk_size_bytes");
+        }
+        else
+        {
+            return 1;
+        }
+    }();
+
     auto const data_mode =
         //! \ogs_file_param{prj__time_loop__output__data_mode}
         config.getConfigParameter<std::string>("data_mode", "Appended");
@@ -175,7 +188,7 @@ std::unique_ptr<Output> createOutput(
 
     return std::make_unique<Output>(
         output_directory, output_type, prefix, suffix, compress_output,
-        number_of_files, data_mode, output_iteration_results,
+        number_of_files, n_chunks_per_file, data_mode, output_iteration_results,
         std::move(repeats_each_steps), std::move(fixed_output_times),
         std::move(output_data_specification), std::move(mesh_names_for_output),
         meshes);

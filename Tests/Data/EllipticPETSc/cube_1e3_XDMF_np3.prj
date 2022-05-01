@@ -67,6 +67,7 @@
             <suffix>_ts_{:timestep}_t_{:time}</suffix>
             <hdf>
                 <number_of_files>1</number_of_files>
+                <chunk_size_bytes>0</chunk_size_bytes>
             </hdf>
         </output>
     </time_loop>

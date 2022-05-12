@@ -28,6 +28,8 @@ namespace MeshLib::IO
  * @param mesh OGS mesh can be mesh or partitionedMesh
  * @param n_files specifies the number of files. If greater than 1 it groups the
  * data of each process to n_files
+ * @param chunk_size_bytes Data will be split into chunks. The parameter
+ * specifies the size (in bytes) of the largest chunk.
  * @return vector of meta data
  */
 std::vector<XdmfHdfData> transformAttributes(MeshLib::Mesh const& mesh,
@@ -39,6 +41,8 @@ std::vector<XdmfHdfData> transformAttributes(MeshLib::Mesh const& mesh,
  * @param data_ptr Memory location of geometry values.
  * @param n_files specifies the number of files. If greater than 1 it groups the
  * data of each process to n_files
+ * @param chunk_size_bytes Data will be split into chunks. The parameter
+ * specifies the size (in bytes) of the largest chunk.
  * @return Geometry meta data
  */
 XdmfHdfData transformGeometry(MeshLib::Mesh const& mesh, double const* data_ptr,
@@ -49,6 +53,8 @@ XdmfHdfData transformGeometry(MeshLib::Mesh const& mesh, double const* data_ptr,
  * @param values actual topology values to get size and memory location
  * @param n_files specifies the number of files. If greater than 1 it groups the
  * data of each process to n_files
+ * @param chunk_size_bytes Data will be split into chunks. The parameter
+ * specifies the size (in bytes) of the largest chunk.
  * @return Topology meta data
  */
 XdmfHdfData transformTopology(std::vector<int> const& values,

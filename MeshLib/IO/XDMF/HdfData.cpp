@@ -55,15 +55,12 @@ HdfData::HdfData(void const* data_start, std::size_t const size_partitioned_dim,
     offsets = {offset_partitioned_dim, 0};
 
     std::size_t unified_length = partition_info.local_length;
-
-    chunk_space =
-        (size_tuple > 1)
-            ? std::vector<Hdf5DimType>{partition_info.longest_local_length,
-                                       size_tuple}
-            : std::vector<Hdf5DimType>{partition_info.longest_local_length};
-
     int type_size = H5Tget_size(data_type);
-    std::size_t space = chunk_size_bytes / size_tuple / type_size;
+    std::size_t space =
+        (chunk_size_bytes > 0)
+            ? ceil(float(chunk_size_bytes) / (size_tuple * type_size))
+            : partition_info.longest_local_length;
+
     if (space > partition_info.global_length)
     {
         INFO("HDF5: Using a single chunk for dataset {:s} .", name);

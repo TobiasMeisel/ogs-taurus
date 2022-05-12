@@ -149,7 +149,7 @@ private:
     bool const _output_file_compression;
     //! Specifies the number of hdf5 output files.
     unsigned int const _n_files;
-    //! Specifies the chunks_size in bytes per hdf5 output file.
+    //! Specifies the chunks size in bytes per hdf5 output file.
     unsigned int const _chunk_size_bytes;
 
     //! Chooses vtk's data mode for output following the enumeration given in

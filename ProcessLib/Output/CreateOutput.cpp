@@ -87,7 +87,7 @@ std::unique_ptr<Output> createOutput(
         }
         else
         {
-            return 1;
+            return 1024 * 1024;
         }
     }();
 

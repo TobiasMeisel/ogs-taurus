@@ -58,7 +58,8 @@ HdfData::HdfData(void const* data_start, std::size_t const size_partitioned_dim,
     int type_size = H5Tget_size(data_type);
     std::size_t space =
         (chunk_size_bytes > 0)
-            ? ceil(float(chunk_size_bytes) / (size_tuple * type_size))
+            ? std::lround(float(chunk_size_bytes) / (size_tuple * type_size) +
+                          0.5)
             : partition_info.longest_local_length;
 
     if (space > partition_info.global_length)
